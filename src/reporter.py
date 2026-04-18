@@ -3,9 +3,9 @@ reporter.py
 Generates a markdown report for GitHub Actions PR comments and local output.
 """
 
-from datetime import datetime
 from src.comparator import ComparisonResult
 from src.gates import GateResult
+from datetime import datetime, timezone
 
 
 def _metric_row(metric: str, candidate: dict, production: dict, deltas: dict) -> str:
@@ -32,7 +32,7 @@ def generate_report(
     model_name: str,
 ) -> str:
 
-    now = datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     status = "✅ PASSED — Auto-promotion approved" if gate_result.passed else "❌ FAILED — Promotion blocked"
 
     lines = [

@@ -1,12 +1,14 @@
-name: ML Guardian
+name: ML Guardian CI
 
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 jobs:
-  evaluate:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,24 +23,12 @@ jobs:
       - name: Install dependencies
         run: pip install -e ".[dev]"
 
-      - name: Run ML Guardian
-        env:
-          MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI }}
-          MODEL_NAME: ${{ secrets.MODEL_NAME }}
-          MIN_ACCURACY: "0.70"
-          MIN_F1: "0.65"
-          MIN_ROC_AUC: "0.70"
-          MAX_ACCURACY_DROP: "0.02"
-          MAX_F1_DROP: "0.03"
-          MAX_ROC_AUC_DROP: "0.02"
-          MAX_ECE: "0.15"
-          MAX_DRIFTED_FEATURES: "3"
-          AUTO_PROMOTE: "true"
-        run: python -m src.main
+      - name: Run tests
+        run: pytest tests/ -v --cov=src --cov-report=term-missing
 
-      - name: Upload report
+      - name: Upload report artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ml-guardian-report
-          path: reports/report.md
+          name: coverage-report
+          path: .coverage
