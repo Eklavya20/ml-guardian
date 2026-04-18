@@ -1,0 +1,9 @@
+mlguard/
+venv/
+__pycache__/
+*.pyc
+.env
+mlruns/
+reports/*.md
+*.egg-info/
+dist/
