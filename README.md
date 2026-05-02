@@ -150,6 +150,73 @@ Drifted features: 0 / 19
 
 ---
 
+
+## 📊 Example Reports
+
+### ✅ Passed — Auto-promotion approved
+
+\```
+🛡️ ML Guardian Report
+Model: telco_churn
+Candidate run: cdead1b3721344caaa749c1ed819840f
+Production run: e3b59a5b5a09490086938177ab9e9efd
+Generated: 2026-04-18 12:13 UTC
+
+Status: ✅ PASSED — Auto-promotion approved
+
+📊 Metric Comparison
+Metric       Candidate   Production   Delta
+accuracy     0.7686      0.7686       0.0000
+f1           0.7767      0.7767       0.0000
+roc_auc      0.8358      0.8358       0.0000
+
+🎯 Calibration
+ECE: 0.0933 → Moderately calibrated
+
+🌊 Drift Detection
+Drifted features: 0 / 19
+\```
+
+---
+
+### ❌ Failed — Promotion blocked
+
+Triggered by a model trained on 10% of data with `n_estimators=1`.
+All three regression gates fired. Production model was protected.
+
+# 🛡️ ML Guardian Report
+**Model:** `telco_churn`
+**Candidate run:** `162b638e3db54003a689de5cc6bf99c4`
+**Production run:** `cdead1b3721344caaa749c1ed819840f`
+**Generated:** 2026-05-02 20:55 UTC
+
+## Status: ❌ FAILED — Promotion blocked
+
+### ❌ Gate Failures
+- Accuracy regressed by 0.1386 (max allowed drop: 0.02)
+- F1 regressed by 0.1379 (max allowed drop: 0.03)
+- ROC-AUC regressed by 0.2129 (max allowed drop: 0.02)
+
+### 📊 Metric Comparison
+| Metric | Candidate | Production | Delta |
+|--------|-----------|------------|-------|
+| accuracy | 0.7215 | 0.8601 | 🔴 -0.1386 |
+| f1 | 0.7277 | 0.8656 | 🔴 -0.1379 |
+| roc_auc | 0.7309 | 0.9438 | 🔴 -0.2129 |
+| precision | 0.7365 | 0.8846 | 🔴 -0.1481 |
+| recall | 0.7215 | 0.8601 | 🔴 -0.1386 |
+
+### 🎯 Calibration
+| | Candidate | Production |
+|---|-----------|------------|
+| ECE | 0.0464 | 0.1005 |
+| Verdict | Well calibrated | Poorly calibrated |
+
+### 🌊 Drift Detection
+**Drifted features:** 0 / 19
+
+---
+
 ## 📦 Logging Test Artifacts
 
 ML Guardian requires test datasets logged as MLflow artifacts:
